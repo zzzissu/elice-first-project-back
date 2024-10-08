@@ -28,5 +28,20 @@ export const userService = {
     }
 
     return rows[0]; // 로그인 성공 시 사용자 정보 반환
+  },
+
+  deleteUser: async (employeenum, password) => {
+    const connection = await dbConnect();
+    const query = `SELECT * FROM user WHERE employeenum = ? AND password = ?`;
+    const [rows] = await connection.execute(query, [employeenum, password]);
+
+    if (rows.length === 0) {
+      throw new Error('Bad Request+사원번호 또는 비밀번호가 잘못되었습니다.');
+    }
+
+    const deleteQuery = `DELETE FROM user WHERE employeenum = ? AND password = ?`;
+    const [result] = await connection.execute(deleteQuery, [employeenum, password]);
+
+    return result;
   }
 };

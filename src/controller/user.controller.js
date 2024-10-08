@@ -17,11 +17,21 @@ export const userController = {
       next(e);
     }
   },
-  
+
   signIn: async (req, res, next) => {
     try {
       const { employeenum, password } = req.body;
       const user = await userService.signIn(employeenum, password);
+      res.status(200).json(user);
+    } catch(e) {
+      next(e);
+    }
+  },
+
+  deleteUser: async (req, res, next) => {
+    try {
+      const { employeenum, password } = req.body;
+      const user = await userService.deleteUser(employeenum, password);
       res.status(200).json(user);
     } catch(e) {
       next(e);
