@@ -1,15 +1,15 @@
-import { db_connect } from '../db/db.js';
+import { dbConnect } from '../db/db.js';
 
-export const user_service = {
-  find_email: async (email) => {
-    const connection = await db_connect();
+export const userService = {
+  findEmail: async (email) => {
+    const connection = await dbConnect();
     const query = `SELECT * FROM user WHERE email = ?`;
     const [rows] = await connection.execute(query, [email]);
     return rows[0]; // 이메일이 있는지 확인하여 사용자 정보 반환
   },
 
-  sign_up: async (user) => {
-    const connection = await db_connect();
+  signUp: async (user) => {
+    const connection = await dbConnect();
     const { name, email, password, phone, birth, employeenum } = user;
 
     // 사용자 생성
@@ -18,8 +18,8 @@ export const user_service = {
     return result; // 새로 생성된 사용자 정보 반환
   },
 
-  sign_in: async (email, password) => {
-    const connection = await db_connect();
+  signIn: async (email, password) => {
+    const connection = await dbConnect();
     const query = `SELECT * FROM user WHERE email = ? AND password = ?`;
     const [rows] = await connection.execute(query, [email, password]);
 
