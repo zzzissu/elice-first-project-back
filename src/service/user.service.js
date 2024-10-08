@@ -1,11 +1,11 @@
 import { dbConnect } from '../db/db.js';
 
 export const userService = {
-  findEmail: async (email) => {
+  findEmail: async (employeenum) => {
     const connection = await dbConnect();
-    const query = `SELECT * FROM user WHERE email = ?`;
-    const [rows] = await connection.execute(query, [email]);
-    return rows[0]; // 이메일이 있는지 확인하여 사용자 정보 반환
+    const query = `SELECT * FROM user WHERE employeenum = ?`;
+    const [rows] = await connection.execute(query, [employeenum]);
+    return rows[0]; // 사원이 이미 있는지 확인하여 사용자 정보 반환
   },
 
   signUp: async (user) => {
@@ -18,13 +18,13 @@ export const userService = {
     return result; // 새로 생성된 사용자 정보 반환
   },
 
-  signIn: async (email, password) => {
+  signIn: async (employeenum, password) => {
     const connection = await dbConnect();
-    const query = `SELECT * FROM user WHERE email = ? AND password = ?`;
-    const [rows] = await connection.execute(query, [email, password]);
+    const query = `SELECT * FROM user WHERE employeenum = ? AND password = ?`;
+    const [rows] = await connection.execute(query, [employeenum, password]);
 
     if (rows.length === 0) {
-      throw new Error('Bad Request+이메일 또는 비밀번호가 잘못되었습니다.');
+      throw new Error('Bad Request+사원번호 또는 비밀번호가 잘못되었습니다.');
     }
 
     return rows[0]; // 로그인 성공 시 사용자 정보 반환
