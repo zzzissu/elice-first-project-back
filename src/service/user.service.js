@@ -3,7 +3,7 @@ import { dbConnect } from '../db/db.js';
 export const userService = {
   findEmail: async (email) => {
     const connection = await dbConnect();
-    const query = `SELECT * FROM user WHERE email = ?`;
+    const query = `SELECT * FROM user WHERE email = ? AND deleted_at IS NULL`;
     const [rows] = await connection.execute(query, [email]);
     return rows[0]; // 사원이 이미 있는지 확인하여 사용자 정보 반환
   },

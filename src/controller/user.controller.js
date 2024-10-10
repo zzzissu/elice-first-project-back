@@ -3,6 +3,12 @@ import { userService } from '../service/user.service.js';
 export const userController = {
   signUp: async (req, res, next) => {
     try {
+      // 이메일 형식 검증
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        throw new Error('Bad Request+유효하지 않은 이메일 형식입니다.');
+      }
+
       // 사원번호 중복 체크
       const { email } = req.body;
       const user = await userService.findEmail(email);
