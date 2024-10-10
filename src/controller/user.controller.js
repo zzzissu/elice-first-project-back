@@ -1,4 +1,5 @@
 import { userService } from '../service/user.service.js';
+import { tokenUtil } from '../utils/auth.utils.js';
 
 export const userController = {
   signUp: async (req, res, next) => {
@@ -28,7 +29,13 @@ export const userController = {
     try {
       const { email, password } = req.body;
       const user = await userService.signIn(email, password);
-      res.status(200).json(user);
+
+      // 토큰 발급
+      const token = tokenUtil.createToken(user);
+
+      // 쿠키에 토큰 저장
+      res.cookie('auth_token', token, { httpOnly: true });
+      res.status(200).json({ message: '토큰 발급 : ', token });
     } catch(e) {
       next(e);
     }
