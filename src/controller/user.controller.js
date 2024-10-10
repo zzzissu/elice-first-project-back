@@ -4,9 +4,9 @@ export const userController = {
   signUp: async (req, res, next) => {
     try {
       // 사원번호 중복 체크
-      const { employeenum } = req.body;
-      const user = await userService.findEmail(employeenum);
-      if (user) throw new Error('Bad Request+해당 사원은 이미 존재합니다!');
+      const { email } = req.body;
+      const user = await userService.findEmail(email);
+      if (user) throw new Error('Bad Request+해당 이메일은 이미 존재합니다!');
 
       // 중복 없으면 서비스로 데이터 보내기
       const result = await userService.signUp(req.body);
@@ -20,8 +20,8 @@ export const userController = {
 
   signIn: async (req, res, next) => {
     try {
-      const { employeenum, password } = req.body;
-      const user = await userService.signIn(employeenum, password);
+      const { email, password } = req.body;
+      const user = await userService.signIn(email, password);
       res.status(200).json(user);
     } catch(e) {
       next(e);
@@ -30,8 +30,8 @@ export const userController = {
 
   deleteUser: async (req, res, next) => {
     try {
-      const { employeenum, password } = req.body;
-      const user = await userService.deleteUser(employeenum, password);
+      const { email, password } = req.body;
+      const user = await userService.deleteUser(email, password);
       res.status(200).json(user);
     } catch(e) {
       next(e);
