@@ -3,6 +3,7 @@ import { userService } from '../service/user.service.js';
 export const userController = {
   signUp: async (req, res, next) => {
     try {
+      const { email } = req.body;
       // 이메일 형식 검증
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
@@ -10,7 +11,6 @@ export const userController = {
       }
 
       // 사원번호 중복 체크
-      const { email } = req.body;
       const user = await userService.findEmail(email);
       if (user) throw new Error('Bad Request+해당 이메일은 이미 존재합니다!');
 
