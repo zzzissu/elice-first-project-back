@@ -1,5 +1,6 @@
 import { dbConnect } from '../db/db.js';
 import { secretPassword } from '../utils/auth.utils.js';
+import { v4 as uuidv4 } from 'uuid';
 
 export const userService = {
   findEmail: async (email) => {
@@ -14,10 +15,11 @@ export const userService = {
     const { name, email, password, phone, birth } = user;
 
     const hashedPassword = await secretPassword.hashPassword(password);
+    const uuid = uuidv4();
 
     // 사용자 생성
-    const query = `INSERT INTO user (name, email, password, phone, birth) VALUES (?, ?, ?, ?, ?)`;
-    const [result] = await connection.execute(query, [name, email, hashedPassword, phone, birth]);
+    const query = `INSERT INTO user (uuid, name, email, password, phone, birth) VALUES (?, ?, ?, ?, ?, ?)`;
+    const [result] = await connection.execute(query, [uuid, name, email, hashedPassword, phone, birth]);
     return result; // 새로 생성된 사용자 정보 반환
   },
 
