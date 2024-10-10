@@ -39,7 +39,7 @@ export const userService = {
       throw new Error('Bad Request+이메일 또는 비밀번호가 잘못되었습니다.');
     }
 
-    const deleteQuery = `DELETE FROM user WHERE email = ? AND password = ?`;
+    const deleteQuery = `UPDATE user SET deleted_at = CURRENT_TIMESTAMP WHERE email = ? AND password = ?`;
     const [result] = await connection.execute(deleteQuery, [email, password]);
 
     return result;
