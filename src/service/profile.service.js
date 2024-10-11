@@ -7,7 +7,7 @@ export const profileService = {
   },
 
   // 사용자 프로필 업데이트 서비스 전화번호만
-  updateUserPhone: async (userId, phone) => {
-    return await profileModel.updateUserPhone(userId, phone);
+  updateUserProfile: async (userId, phone) => {
+    return await profileModel.updateUserProfile(userId, phone);
   }
 };

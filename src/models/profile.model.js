@@ -9,11 +9,26 @@ export const profileModel = {
     return rows[0];
   },
 
-  updateUserPhone: async (userId, updatedData) => {
-    // 프로필 업데이트 모델
+  updateUserProfile: async ({ userId, profileImage }) => {
     const connection = await dbConnect();
-    const query = `UPDATE user SET phone = ? WHERE uuid = ?`;  // 전화번호만 업데이트
-    const [result] = await connection.execute(query, [phone, userId]);
+    let query = `UPDATE user SET `;
+    const queryParams = [];
+
+    if (phone) {
+      query += `phone = ? `;
+      queryParams.push(phone);
+    }
+
+    if (profileImage) {
+      if (phone) query += `, `;
+      query += `profile_image = ? `;
+      queryParams.push(profileImage);
+    }
+
+    query += `WHERE uuid = ?`;
+    queryParams.push(userId);
+
+    const [result] = await connection.execute(query, queryParams);
     return result;
   }
 };
