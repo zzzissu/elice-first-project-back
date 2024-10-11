@@ -41,6 +41,20 @@ export const userController = {
     }
   },
 
+  // 실패작 다시 만들기
+  findPassword: async (req, res, next) => {
+    try {
+      const { email } = req.body;
+      const user = await userService.findEmail(email);
+      if (!user) throw new Error('Bad Request+존재하지 않는 이메일');
+
+      const result = await userService.findPassword(email);
+      res.status(200).json({result});
+    } catch(e) {
+      next(e);
+    }
+  },
+
   deleteUser: async (req, res, next) => {
     try {
       const { email, password } = req.body;
