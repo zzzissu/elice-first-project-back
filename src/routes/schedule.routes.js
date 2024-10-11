@@ -3,7 +3,10 @@ import { scheduleController } from '../controller/schedule.controller.js';
 
 const router = Router();
 
-// 상태 변경 라우트
-router.put('/status/:userId', scheduleController.changeStatus);
+// 개인 일정 추가
+router.post('/:id/personal', scheduleController.addPersonalSchedule);
+
+// 업무 일정 추가
+router.post('/:id/work', scheduleController.addWorkSchedule);
 
 export const schedulerouter = router;

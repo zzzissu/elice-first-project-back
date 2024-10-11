@@ -1,8 +1,13 @@
 import { scheduleModel } from '../models/schedule.model.js';
 
 export const scheduleService = {
-  // 상태 업데이트 서비스
-  updateStatus: async (userId, status) => {
-    return await scheduleModel.updateStatus(userId, status);
+  // 개인 일정 추가
+  addPersonalSchedule: async (userId, scheduleData) => {
+    return await scheduleModel.addPersonalSchedule(userId, scheduleData);
+  },
+
+  // 업무 일정 추가
+  addWorkSchedule: async (userId, scheduleData) => {
+    return await scheduleModel.addWorkSchedule(userId, scheduleData);
   }
 };

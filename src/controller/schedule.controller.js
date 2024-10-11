@@ -1,43 +1,39 @@
 import { scheduleService } from '../service/schedule.service.js';
 
 export const scheduleController = {
-  // 상태 변경 처리 
-  changeStatus: async (req, res, next) => {
+  // 개인 일정 추가
+  addPersonalSchedule: async (req, res, next) => {
     try {
-      const { userId } = req.params;
-      const { status } = req.body;
+      const userId = req.params.id;
+      const { title, content, startDate, endDate } = req.body;
 
-      // 사용자 정보 가져오기
-      const user = await userModel.getUserById(userId);
-      if (!user) {
-        return res.status(404).json({ message: "사용자를 찾을 수 없습니다." });
+      if (!title || !content || !startDate) {
+        return res.status(400).json({ message: "필수 정보가 부족합니다." });
       }
 
-      // 상태 업데이트 서비스 호출
-      const result = await scheduleService.updateStatus(userId, status);
+      // 개인 일정 추가 서비스 호출
+      const result = await scheduleService.addPersonalSchedule(userId, { title, content, startDate, endDate });
 
-      res.status(200).json({ message: '상태가 성공적으로 변경되었습니다.' });
+      res.status(201).json({ message: "개인 일정이 성공적으로 추가되었습니다.", result });
     } catch (e) {
       next(e);
     }
   },
 
-  // 개인 일정 생성
-  createPersonalSchedule: async (req, res, next) => {
+  // 업무 일정 추가
+  addWorkSchedule: async (req, res, next) => {
     try {
-      const { userId } = req.params;
-      const { title, date } = req.body;
+      const userId = req.params.id;
+      const { title, content, startDate, endDate } = req.body;
 
-      // 스케줄 생성 서비스 호출
-      const result = await scheduleService.createSchedule({
-        user_id: userId,
-        title,
-        start_date: date,
-        type: 'personal',
-        make_public: false,
-      });
+      if (!title || !content || !startDate) {
+        return res.status(400).json({ message: "필수 정보가 부족합니다." });
+      }
 
-      res.status(201).json({ message: '개인 일정이 성공적으로 추가되었습니다.', scheduleId: result.insertId });
+      // 업무 일정 추가 서비스 호출
+      const result = await scheduleService.addWorkSchedule(userId, { title, content, startDate, endDate });
+
+      res.status(201).json({ message: "업무 일정이 성공적으로 추가되었습니다.", result });
     } catch (e) {
       next(e);
     }
