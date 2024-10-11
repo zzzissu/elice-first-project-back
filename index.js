@@ -5,6 +5,7 @@ import { dbConnect } from "./src/db/db.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { userRouter } from "./src/routes/user.routes.js";
+import { announcementRouter } from "./src/routes/announcement.routes.js";
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use('/users', userRouter);
+app.use('/announcement', announcementRouter);
 
 app.use(errorHandler);
 app.listen(3000, () => {
