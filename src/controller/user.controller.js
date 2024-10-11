@@ -1,10 +1,17 @@
 import { userService } from '../service/user.service.js';
+import { tokenUtil } from '../utils/auth.utils.js';
 
 export const userController = {
   signUp: async (req, res, next) => {
     try {
-      // 사원번호 중복 체크
       const { email } = req.body;
+      // 이메일 형식 검증
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        throw new Error('Bad Request+유효하지 않은 이메일 형식입니다.');
+      }
+
+      // 사원번호 중복 체크
       const user = await userService.findEmail(email);
       if (user) throw new Error('Bad Request+해당 이메일은 이미 존재합니다!');
 
@@ -22,7 +29,13 @@ export const userController = {
     try {
       const { email, password } = req.body;
       const user = await userService.signIn(email, password);
-      res.status(200).json(user);
+
+      // 토큰 발급
+      const token = tokenUtil.createToken(user);
+
+      // 쿠키에 토큰 저장
+      res.cookie('auth_token', token, { httpOnly: true });
+      res.status(200).json({ message: '토큰 발급 : ', token });
     } catch(e) {
       next(e);
     }
