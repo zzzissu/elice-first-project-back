@@ -30,5 +30,12 @@ export const profileModel = {
 
     const [result] = await connection.execute(query, queryParams);
     return result;
-  }
+  },
+  
+  updateUserStatus: async (userId, status) => {
+    const connection = await dbConnect();
+    const query = `UPDATE user SET state = ? WHERE uuid = ?`;
+    const [result] = await connection.execute(query, [status, userId]);
+    return result;
+  },
 };
