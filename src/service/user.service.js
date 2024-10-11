@@ -66,5 +66,13 @@ export const userService = {
     const [result] = await connection.execute(deleteQuery, [user.email]);
 
     return result;
+  },
+
+  findPassword: async (email) => {
+    const connection = await dbConnect();
+    const query = `SELECT password FROM user WHERE email = ? AND deleted_at IS NULL`
+    const [rows] = await connection.execute(query, [email]);
+
+    return rows[0];
   }
 };
