@@ -22,6 +22,16 @@ export const tokenUtil = {
     const payload = {
       id: userData.id,
       email: userData.email,
+      name: userData.name,
+      phone: userData.phone,
+      birth: userData.birth,
+      state: userData.state,
+      status_message: userData.status_message,
+      annual_leave: userData.annual_leave,
+      profile_image: userData.profile_image,
+      position: userData.position,
+      department: userData.department,
+      authority: userData.authority
     };
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
     return token;
