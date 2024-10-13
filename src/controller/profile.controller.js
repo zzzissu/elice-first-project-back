@@ -35,7 +35,7 @@ export const profileController = {
       }
 
       // 서비스 호출로 전화번호, 프로필 이미지 업데이트
-      const result = await profileService.updateUserProfile(userId, { phone, profileImage });
+      await profileService.updateUserProfile(userId, { phone, profileImage });
 
       res.status(200).json({ message: '프로필이 성공적으로 수정되었습니다.' });
     } catch (e) {
@@ -53,7 +53,7 @@ export const profileController = {
       }
 
       // 상태 업데이트 서비스 호출
-      const result = await profileService.updateUserStatus(userId, status);
+      await profileService.updateUserStatus(userId, status);
 
       // 알림 정보 전송
       res.status(200).json({
