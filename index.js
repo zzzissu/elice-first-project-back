@@ -5,6 +5,8 @@ import cors from "cors";
 import { userRouter } from "./src/routes/user.routes.js";
 import { profilerouter } from './src/routes/profile.routes.js';
 import { schedulerouter } from './src/routes/schedule.routes.js';
+import { leaverouter } from './src/routes/leave.routes.js';
+
 import dotenv from 'dotenv';
 
 dotenv.config(); // .env 파일을 로드하여 환경 변수로 설정
@@ -22,7 +24,7 @@ app.use(express.json());
 app.use('/users', userRouter);           
 app.use('/profile', profilerouter);      //프로필 관련 라우터
 app.use('/schedule', schedulerouter);    // 스케줄 관련 라우터
-
+app.use('/leave', leaverouter);          // 연차관련 라우터
 
 app.use(errorHandler);
 app.listen(3000, () => {
