@@ -1,13 +1,18 @@
 import { scheduleModel } from '../models/schedule.model.js';
 
 export const scheduleService = {
-  // 개인 일정 추가
-  addPersonalSchedule: async (userId, scheduleData) => {
-    return await scheduleModel.addPersonalSchedule(userId, scheduleData);
+  // 일정 추가 (개인/팀별 구분)
+  addSchedule: async (scheduleData) => {
+    return await scheduleModel.addSchedule(scheduleData);
   },
 
-  // 업무 일정 추가
-  addWorkSchedule: async (userId, scheduleData) => {
-    return await scheduleModel.addWorkSchedule(userId, scheduleData);
+  // 팀별 일정 조회
+  getSchedulesByTeam: async (teamId) => {
+    return await scheduleModel.getSchedulesByTeam(teamId);
+  },
+
+  // 개인 일정 조회
+  getSchedulesByUser: async (userId) => {
+    return await scheduleModel.getSchedulesByUser(userId);
   }
 };
