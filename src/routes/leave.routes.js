@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { leaveController } from '../controller/leave.controller';
+import { leaveController } from '../controller/leave.controller.js';
 
 const router = Router();
 
