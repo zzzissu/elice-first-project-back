@@ -1,6 +1,7 @@
 import { dbConnect } from '../db/db.js';
 
 export const profileModel = {
+  
   // 프로필 조회 모델
   getUserProfile: async (userId) => {
     const connection = await dbConnect();
@@ -31,6 +32,13 @@ export const profileModel = {
     const [result] = await connection.execute(query, queryParams);
     return result;
   },
+  //사용자 상태창 조회
+  getUserState: async (userId) => {
+    const connection = await dbConnect();
+    const query = 'SELECT state FROM user WHERE id = ?';
+    const [rows] = await connection.execute(query, [userId]);
+    return rows.length ? rows[0].state : null;
+  },
   //상태창 업데이트 모델
   updateUserStatus: async (userId, status) => {
     const connection = await dbConnect();
@@ -38,4 +46,5 @@ export const profileModel = {
     const [result] = await connection.execute(query, [status, userId]);
     return result;
   },
+  
 };

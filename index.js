@@ -6,6 +6,7 @@ import { userRouter } from "./src/routes/user.routes.js";
 import { profilerouter } from './src/routes/profile.routes.js';
 import { schedulerouter } from './src/routes/schedule.routes.js';
 import { leaverouter } from './src/routes/leave.routes.js';
+import { notificationRouter } from './src/routes/notification.routes.js';
 import dotenv from 'dotenv';
 
 dotenv.config(); // .env 파일을 로드하여 환경 변수로 설정
@@ -25,6 +26,7 @@ app.use('/profile', profilerouter);      //프로필 관련 라우터
 app.use('/schedule', schedulerouter);    // 스케줄 관련 라우터
 app.use('/leave', leaverouter);          // 연차관련 라우터
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); //프로필 사진파일 업로드
+app.use('/notifications', notificationRouter);  //알람 관련 라우터
 app.use(errorHandler);
 app.listen(3000, () => {
   console.log("서버 실행");
