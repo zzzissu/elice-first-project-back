@@ -1,4 +1,7 @@
 import mysql from "mysql2/promise";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const dbConfig = {
   host: "helpproject-db.c9scseeckkag.ap-northeast-2.rds.amazonaws.com",     // MySQL 서버의 호스트 (로컬에서는 localhost)
