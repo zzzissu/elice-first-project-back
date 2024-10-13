@@ -1,13 +1,40 @@
 import { profileModel } from '../models/profile.model.js';
 
 export const profileService = {
-  // 사용자 프로필 조회 서비스
+  // 사용자 프로필 조회
   getUserProfile: async (userId) => {
-    return await profileModel.getUserProfile(userId);  // uuid를 사용해 모델에서 프로필 조회
+    const query = 'SELECT * FROM user WHERE id = ?';
+    const [rows] = await db.execute(query, [userId]);
+    return rows[0];
   },
 
-  // 사용자 프로필 업데이트 서비스 전화번호만
-  updateUserProfile: async (userId, phone) => {
-    return await profileModel.updateUserProfile(userId, phone);
+  // 프로필 수정
+  updateUserProfile: async (userId, { phone, profileImage }) => {
+    let query = 'UPDATE user SET ';
+    const queryParams = [];
+
+    if (phone) {
+      query += 'phone = ?, ';
+      queryParams.push(phone);
+    }
+
+    if (profileImage) {
+      query += 'profile_image = ?, ';
+      queryParams.push(profileImage);
+    }
+
+    query = query.slice(0, -2); // 마지막 쉼표 제거
+    query += ' WHERE id = ?';
+    queryParams.push(userId);
+
+    const [result] = await db.execute(query, queryParams);
+    return result;
+  },
+
+  // 상태 업데이트
+  updateUserStatus: async (userId, status) => {
+    const query = 'UPDATE user SET state = ? WHERE id = ?';
+    const [result] = await db.execute(query, [status, userId]);
+    return result;
   }
 };

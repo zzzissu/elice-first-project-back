@@ -42,7 +42,7 @@ export const profileController = {
       next(e);  
     }
   },
-  
+  //상태 업데이트
   updateProfileStatus: async (req, res, next) => {
     try {
       const userId = req.params.id;
