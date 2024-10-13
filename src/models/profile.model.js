@@ -8,7 +8,7 @@ export const profileModel = {
     const [rows] = await connection.execute(query, [userId]);
     return rows[0];
   },
-
+  // 프로필 업데이트 모델
   updateUserProfile: async ({ userId, profileImage }) => {
     const connection = await dbConnect();
     let query = `UPDATE user SET `;
@@ -31,7 +31,7 @@ export const profileModel = {
     const [result] = await connection.execute(query, queryParams);
     return result;
   },
-  
+  //상태창 업데이트 모델
   updateUserStatus: async (userId, status) => {
     const connection = await dbConnect();
     const query = `UPDATE user SET state = ? WHERE uuid = ?`;
