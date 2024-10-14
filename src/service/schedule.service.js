@@ -23,5 +23,17 @@ export const scheduleService = {
   // 전체 유저 일정 조회
   getAllUserSchedules: async () => {
     return await scheduleModel.getAllUserSchedules();
+  },
+  // 개인 일정 삭제
+  deleteScheduleByUser: async (userId, scheduleId) => {
+    const query = 'DELETE FROM schedule WHERE id = ? AND user_id = ? AND type = "personal"';
+    const [result] = await db.execute(query, [scheduleId, userId]);
+    return result;
+  },
+  //팀별 일정 삭제
+  deleteScheduleByTeam: async (teamId, scheduleId) => {
+    const query = 'DELETE FROM schedule WHERE id = ? AND team_id = ? AND type = "team"';
+    const [result] = await db.execute(query, [scheduleId, teamId]);
+    return result;
   }
 };

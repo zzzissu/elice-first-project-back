@@ -12,7 +12,7 @@ export const profileService = {
     return await profileModel.updateUserProfile(userId, { phone, profileImage });
   },
 
-  // 사용자 상태 가져오기 (모델에서 호출)
+  // 사용자 상태 가져오기 
   getUserState: async (userId) => {
     return await profileModel.getUserState(userId);
   },

@@ -67,5 +67,39 @@ export const scheduleController = {
     } catch (e) {
       next(e);
     }
+  },
+  //개인 일정 삭제
+  deleteScheduleByUser: async (req, res, next) => {
+    try {
+      const userId = req.params.userId; 
+      const scheduleId = req.params.scheduleId; 
+  
+      const result = await scheduleService.deleteScheduleByUser(userId, scheduleId);
+  
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: "해당 사용자의 일정이 없거나 삭제할 수 없습니다." });
+      }
+  
+      res.status(200).json({ message: "개인일정이 성공적으로 삭제되었습니다." });
+    } catch (e) {
+      next(e);
+    }
+  },
+  // 팀별 일정 삭제
+  deleteScheduleByTeam: async (req, res, next) => {
+    try {
+      const teamId = req.params.teamId; 
+      const scheduleId = req.params.scheduleId; 
+  
+      const result = await scheduleService.deleteScheduleByTeam(teamId, scheduleId);
+  
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: "해당 팀의 일정이 없거나 삭제할 수 없습니다." });
+      }
+  
+      res.status(200).json({ message: "팀별일정이 성공적으로 삭제되었습니다." });
+    } catch (e) {
+      next(e);
+    }
   }
 };

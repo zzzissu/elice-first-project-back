@@ -18,4 +18,10 @@ router.get('/teamSchedule', scheduleController.getAllTeamSchedules);
 // 전체 개인 일정 조회
 router.get('/userSchedule', scheduleController.getAllUserSchedules);
 
+// 개인 일정 삭제
+router.delete('/user/:userId/schedule/:scheduleId', scheduleController.deleteScheduleByUser);
+
+// 팀별 일정 삭제
+router.delete('/team/:teamId/schedule/:scheduleId', scheduleController.deleteScheduleByTeam);
+
 export const schedulerouter = router;
