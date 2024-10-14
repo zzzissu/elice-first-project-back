@@ -10,11 +10,13 @@ import { schedulerouter } from './src/routes/schedule.routes.js';
 import { leaverouter } from './src/routes/leave.routes.js';
 import { announcementRouter } from "./src/routes/announcement.routes.js";
 import { approvalRouter } from "./src/routes/approval.routes.js";
-
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
 
-
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const app = express();
 const connection = await dbConnect();
 
