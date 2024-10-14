@@ -6,6 +6,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { userRouter } from "./src/routes/user.routes.js";
 import { announcementRouter } from "./src/routes/announcement.routes.js";
+import { approvalRouter } from "./src/routes/approval.routes.js";
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use(express.json());
 
 app.use('/users', userRouter);
 app.use('/announcement', announcementRouter);
+app.use('/approval', approvalRouter);
 
 app.use(errorHandler);
 app.listen(3000, () => {
