@@ -1,5 +1,6 @@
 import { userService } from '../service/user.service.js';
 import { tokenUtil } from '../utils/auth.utils.js';
+import { createResetCode } from '../utils/password.utils.js';
 
 export const userController = {
   signUp: async (req, res, next) => {
@@ -41,16 +42,28 @@ export const userController = {
     }
   },
 
-  // 실패작 다시 만들기
-  findPassword: async (req, res, next) => {
+  requestResetPassword: async (req, res, next) => {
     try {
       const { email } = req.body;
       const user = await userService.findEmail(email);
-      if (!user) throw new Error('Bad Request+존재하지 않는 이메일');
+      if (!user) throw new Error('Bad Request+존재하지 않는 이메일입니다.');
 
-      const result = await userService.findPassword(email);
-      res.status(200).json({result});
-    } catch(e) {
+      const resetCode = await createResetCode(email);
+
+      res.status(200).json({ message: '인증 코드가 이메일로 발송되었습니다.' });
+    } catch (e) {
+      next(e);
+    }
+  },
+
+  resetPassword: async (req, res, next) => {
+    try {
+      const { email, resetCode, newPassword } = req.body;
+
+      const user = await userService.resetPassword(email, resetCode, newPassword);
+
+      res.status(200).json(user);
+    } catch (e) {
       next(e);
     }
   },

@@ -68,11 +68,28 @@ export const userService = {
     return result;
   },
 
-  findPassword: async (email) => {
+  resetPassword: async (email, resetCode, newPassword) => {
     const connection = await dbConnect();
-    const query = `SELECT password FROM user WHERE email = ? AND deleted_at IS NULL`
-    const [rows] = await connection.execute(query, [email]);
 
-    return rows[0];
+    // 비밀번호 재설정 코드 및 유효기간 확인
+    const query = `SELECT * FROM password_reset
+                    WHERE email = ? AND reset_code = ? AND expires_at > NOW()`;
+    const [rows] = await connection.execute(query, [email, resetCode]);
+
+    if (rows.length === 0) {
+      throw new Error('Bad Request+유효하지 않은 인증 코드이거나 코드가 만료되었습니다.');
+    }
+    
+    // 비밀번호 해시화
+    const hashedPassword = await secretPassword.hashPassword(newPassword);
+
+    const updateQuery = `UPDATE user SET password = ?
+                          WHERE email = ? AND deleted_at IS NULL`;
+    const [result] = await connection.execute(updateQuery, [hashedPassword, email]);
+
+    const deleteQuery = `DELETE FROM password_reset WHERE email = ?`;
+      await connection.execute(deleteQuery, [email]);
+
+    return result;
   }
 };
