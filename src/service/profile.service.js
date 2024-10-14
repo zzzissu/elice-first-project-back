@@ -13,8 +13,8 @@ export const profileService = {
   },
 
   // 사용자 상태 가져오기 
-  getUserState: async (userId) => {
-    return await profileModel.getUserState(userId);
+  getUserStatus: async (userId) => {
+    return await profileModel.getUserStatus(userId); 
   },
   
   // 상태 업데이트

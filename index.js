@@ -26,7 +26,7 @@ app.use('/profile', profilerouter);      //프로필 관련 라우터
 app.use('/schedule', schedulerouter);    // 스케줄 관련 라우터
 app.use('/leave', leaverouter);          // 연차관련 라우터
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); //프로필 사진파일 업로드
-app.use('/notifications', notificationRouter);  //알람 관련 라우터
+
 app.use(errorHandler);
 app.listen(3000, () => {
   console.log("서버 실행");

@@ -33,12 +33,13 @@ export const profileModel = {
     return result;
   },
   //사용자 상태창 조회
-  getUserState: async (userId) => {
+  getUserStatus: async (userId) => {
     const connection = await dbConnect();
-    const query = 'SELECT state FROM user WHERE id = ?';
+    const query = 'SELECT status FROM user WHERE id = ?';
     const [rows] = await connection.execute(query, [userId]);
-    return rows.length ? rows[0].state : null;
+    return rows.length ? rows[0].status : null;
   },
+  
   //상태창 업데이트 모델
   updateUserStatus: async (userId, status) => {
     const connection = await dbConnect();

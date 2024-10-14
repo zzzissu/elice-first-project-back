@@ -42,6 +42,21 @@ export const profileController = {
       next(e);  
     }
   },
+   // 프로필 상태창 조회
+   getProfileStatus: async (req, res, next) => {
+    try {
+      const userId = req.params.id; 
+      const status = await profileService.getUserStatus(userId); 
+
+      if (!status) {
+        return res.status(404).json({ message: "상태를 찾을 수 없습니다." });
+      }
+
+      res.status(200).json({ status });
+    } catch (e) {
+      next(e);
+    }
+  },
   //상태 업데이트
   updateProfileStatus: async (req, res, next) => {
     try {
