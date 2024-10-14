@@ -27,6 +27,36 @@ export const approvalController = {
     }
   },
 
+  // 외근 신청서
+  postOutside: async (req, res, next) => {
+    try {
+      const { start_date, finish_date, content } = req.body;
+      const user_name = req.user.name;
+      const user_id = req.user.id;
+
+      const result = await approvalService
+      .postOutside({ start_date, finish_date, content }, user_name, user_id);
+      res.status(201).json(result);
+    } catch(e) {
+      next(e);
+    }
+  },
+
+  // 업무 보고서
+  postBusinessReport: async (req, res, next) => {
+    try {
+      const { title, start_date, finish_date, content, request, significant } = req.body;
+      const user_name = req.user.name;
+      const user_id = req.user.id;
+
+      const result = await approvalService
+      .postBusinessReport({ title, start_date, finish_date, content, request, significant }, user_name, user_id);
+      res.status(201).json(result);
+    } catch(e) {
+      next(e);
+    }
+  },
+
   // 결재 대기중 내역 호출 컨트롤
   getAllWaitApproval: async (req,res,next) => {
     try {
