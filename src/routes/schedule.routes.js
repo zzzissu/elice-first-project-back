@@ -12,4 +12,10 @@ router.get('/team/:teamId', scheduleController.getSchedulesByTeam);
 // 개인 일정 조회
 router.get('/user/:userId', scheduleController.getSchedulesByUser);
 
+// 전체 팀 일정 조회
+router.get('/teamSchedule', scheduleController.getAllTeamSchedules);
+
+// 전체 개인 일정 조회
+router.get('/userSchedule', scheduleController.getAllUserSchedules);
+
 export const schedulerouter = router;

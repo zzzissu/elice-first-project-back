@@ -22,5 +22,20 @@ export const scheduleModel = {
     const query = `SELECT * FROM schedule WHERE user_id = ? AND type = 'personal'`;
     const [rows] = await connection.execute(query, [userId]);
     return rows;
+  },
+   // 전체 팀 일정 조회
+   getAllTeamSchedules: async () => {
+    const connection = await dbConnect();
+    const query = `SELECT * FROM schedule WHERE type = 'work'`;
+    const [rows] = await connection.execute(query);
+    return rows;
+  },
+
+  // 전체 개인 일정 조회
+  getAllUserSchedules: async () => {
+    const connection = await dbConnect();
+    const query = `SELECT * FROM schedule WHERE type = 'personal'`;
+    const [rows] = await connection.execute(query);
+    return rows;
   }
 };

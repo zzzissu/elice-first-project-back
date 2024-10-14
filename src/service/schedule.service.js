@@ -14,5 +14,14 @@ export const scheduleService = {
   // 개인 일정 조회
   getSchedulesByUser: async (userId) => {
     return await scheduleModel.getSchedulesByUser(userId);
+  },
+  // 전체 팀 일정 조회
+  getAllTeamSchedules: async () => {
+    return await scheduleModel.getAllTeamSchedules();
+  },
+
+  // 전체 유저 일정 조회
+  getAllUserSchedules: async () => {
+    return await scheduleModel.getAllUserSchedules();
   }
 };

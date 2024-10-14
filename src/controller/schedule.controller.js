@@ -48,5 +48,24 @@ export const scheduleController = {
     } catch (e) {
       next(e);
     }
+  },
+  // 전체 팀 일정 조회
+  getAllTeamSchedules: async (req, res, next) => {
+    try {
+      const teamSchedules = await scheduleService.getAllTeamSchedules();
+      res.status(200).json(teamSchedules);
+    } catch (e) {
+      next(e);
+    }
+  },
+
+  // 전체 유저 일정 조회
+  getAllUserSchedules: async (req, res, next) => {
+    try {
+      const userSchedules = await scheduleService.getAllUserSchedules();
+      res.status(200).json(userSchedules);
+    } catch (e) {
+      next(e);
+    }
   }
 };
