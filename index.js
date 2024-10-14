@@ -10,6 +10,7 @@ import { schedulerouter } from './src/routes/schedule.routes.js';
 import { leaverouter } from './src/routes/leave.routes.js';
 import { announcementRouter } from "./src/routes/announcement.routes.js";
 import { approvalRouter } from "./src/routes/approval.routes.js";
+import { emailRouter } from "./src/routes/email.routes.js";
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -38,6 +39,7 @@ app.use('/leave', leaverouter);          // 연차관련 라우터
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); //프로필 사진파일 업로드
 app.use('/announcement', announcementRouter);
 app.use('/approval', approvalRouter);
+app.use('/email', emailRouter);
 
 
 app.use(errorHandler);
