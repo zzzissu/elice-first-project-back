@@ -42,6 +42,17 @@ export const userController = {
     }
   },
 
+  getFindUser: async (req, res, next) => {
+    try {
+      const userId = req.user.id;
+      const user = await userService.getFindUser(userId);
+
+      res.status(200).json(user);
+    } catch(e) {
+      next(e);
+    }
+  },
+
   requestResetPassword: async (req, res, next) => {
     try {
       const { email } = req.body;

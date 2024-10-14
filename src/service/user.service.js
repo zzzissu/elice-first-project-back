@@ -45,6 +45,14 @@ export const userService = {
     return user;
   },
 
+  getFindUser: async (userId) => {
+    const connection = await dbConnect();
+    const query = `SELECT name, email, phone, birth, state, status_message, annual_leave, profile_image, position, department, business_trip FROM user
+                    WHERE id = ? AND deleted_at IS NULL`;
+    const [rows] = await connection.execute(query, [userId]);
+    return rows[0];
+  },
+
   deleteUser: async (email, password) => {
     const connection = await dbConnect();
     const query = `SELECT * FROM user WHERE email = ? AND deleted_at IS NULL`;

@@ -10,6 +10,9 @@ router.post('/api/signup', userController.signUp);
 // 로그인
 router.post('/api/signin', userController.signIn);
 
+// 회원 정보 출력
+router.get('/api', authMiddleware.verifyToken, userController.getFindUser);
+
 // 비밀번호 재설정 코드 요청
 router.post('/api/password/request', userController.requestResetPassword);
 
