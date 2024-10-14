@@ -13,10 +13,10 @@ router.get('/team/:teamId', scheduleController.getSchedulesByTeam);
 router.get('/user/:userId', scheduleController.getSchedulesByUser);
 
 // 전체 팀 일정 조회
-router.get('/teamSchedule', scheduleController.getAllTeamSchedules);
+router.get('/team-Schedule', scheduleController.getAllTeamSchedules);
 
 // 전체 개인 일정 조회
-router.get('/userSchedule', scheduleController.getAllUserSchedules);
+router.get('/user-Schedule', scheduleController.getAllUserSchedules);
 
 // 개인 일정 삭제
 router.delete('/user/:userId/schedule/:scheduleId', scheduleController.deleteScheduleByUser);
