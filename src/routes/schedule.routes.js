@@ -12,10 +12,10 @@ router.get('/team/:teamId', scheduleController.getSchedulesByTeam);
 // 개인 일정 조회
 router.get('/user/:userId', scheduleController.getSchedulesByUser);
 
-// 전체 팀 일정 조회
+// 전체 팀 일정 조회, 케밥케이스 적용
 router.get('/team-Schedule', scheduleController.getAllTeamSchedules);
 
-// 전체 개인 일정 조회
+// 전체 개인 일정 조회, 케밥케이스 적용
 router.get('/user-Schedule', scheduleController.getAllUserSchedules);
 
 // 개인 일정 삭제
