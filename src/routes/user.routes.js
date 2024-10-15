@@ -4,9 +4,22 @@ import { authMiddleware } from "../middleware/auth.middleware.js";
 
 const router = Router();
 
-router.post('/api/signup', userController.signUp);
-router.post('/api/signin', userController.signIn);
-router.post('/api/findpassword', userController.findPassword);
-router.delete('/api/delete', authMiddleware.verifyToken, userController.deleteUser);
+// 회원 가입
+router.post('/signup', userController.signUp);
+
+// 로그인
+router.post('/signin', userController.signIn);
+
+// 회원 정보 출력
+router.get('/', authMiddleware.verifyToken, userController.getFindUser);
+
+// 비밀번호 재설정 코드 요청
+router.post('/password/request', userController.requestResetPassword);
+
+// 비밀번호 재설정
+router.post('/password/reset', userController.resetPassword);
+
+// 회원 탈퇴
+router.delete('/delete', authMiddleware.verifyToken, userController.deleteUser);
 
 export const userRouter = router;
