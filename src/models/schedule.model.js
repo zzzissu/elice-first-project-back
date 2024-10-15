@@ -1,41 +1,57 @@
 import { dbConnect } from '../db/db.js';
 
 export const scheduleModel = {
-  // 일정 추가 (개인 또는 팀별 일정)
-  addSchedule: async ({ userId = null, teamId = null, title, content, startDate, endDate, type }) => {
-    const connection = await dbConnect();
-    const query = `INSERT INTO schedule (user_id, team_id, title, content, start_date, end_date, type) VALUES (?, ?, ?, ?, ?, ?, ?)`;
-    const [result] = await connection.execute(query, [userId, teamId, title, content, startDate, endDate, type]);
-    return result;
-  },
-  // 팀별 일정 조회
-  getSchedulesByTeam: async (teamId) => {
-    const connection = await dbConnect();
-    const query = `SELECT * FROM schedule WHERE team_id = ? AND type = 'work'`;
-    const [rows] = await connection.execute(query, [teamId]);
-    return rows;
+  // 일정 추가
+  addSchedule: async ({ userId, title, content, makePublic, createdAt, finishedAt }) => {
+    const db = await dbConnect(); 
+    const query = `
+      INSERT INTO schedule (user_id, title, content, make_public, created_at, finished_at)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `;
+    await db.execute(query, [userId, title, content, makePublic, createdAt, finishedAt]);
   },
 
-  // 개인 일정 조회
+  // 개인 일정 조회 (make_public = false)
   getSchedulesByUser: async (userId) => {
-    const connection = await dbConnect();
-    const query = `SELECT * FROM schedule WHERE user_id = ? AND type = 'personal'`;
-    const [rows] = await connection.execute(query, [userId]);
-    return rows;
-  },
-   // 전체 팀 일정 조회
-   getAllTeamSchedules: async () => {
-    const connection = await dbConnect();
-    const query = `SELECT * FROM schedule WHERE type = 'work'`;
-    const [rows] = await connection.execute(query);
+    const db = await dbConnect();
+    const query = `
+      SELECT * FROM schedule
+      WHERE user_id = ? AND deleted_at IS NULL AND make_public = false
+    `;
+    const [rows] = await db.execute(query, [userId]);
     return rows;
   },
 
-  // 전체 개인 일정 조회
-  getAllUserSchedules: async () => {
-    const connection = await dbConnect();
-    const query = `SELECT * FROM schedule WHERE type = 'personal'`;
-    const [rows] = await connection.execute(query);
+  // 팀별 일정 조회 (make_public = true)
+  getSchedulesByTeam: async () => {
+    const db = await dbConnect();
+    const query = `
+      SELECT * FROM schedule
+      WHERE make_public = true AND deleted_at IS NULL
+    `;
+    const [rows] = await db.execute(query);
     return rows;
+  },
+
+  // 개인 일정 삭제 (make_public = false)
+  deleteScheduleByUser: async (scheduleId) => {
+    const db = await dbConnect();
+    const query = `
+      UPDATE schedule
+      SET deleted_at = NOW()
+      WHERE id = ? AND make_public = false
+    `;
+    await db.execute(query, [scheduleId]);
+  },
+
+  // 팀별 일정 삭제 (make_public = true)
+  deleteScheduleByTeam: async (scheduleId) => {
+    const db = await dbConnect();
+    const query = `
+      UPDATE schedule
+      SET deleted_at = NOW()
+      WHERE id = ? AND make_public = true
+    `;
+    await db.execute(query, [scheduleId]);
   }
 };
