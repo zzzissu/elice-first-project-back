@@ -12,6 +12,7 @@ import { approvalRouter } from "./src/routes/approval.routes.js";
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { authMiddleware } from './src/middleware/auth.middleware.js';
+import { stateRouter } from './src/routes/state.routes.js'; 
 
 dotenv.config();
 
@@ -33,7 +34,7 @@ app.use(express.json());
 app.use('/users', userRouter);           
 app.use('/profile', profilerouter);      //프로필 관련 라우터
 app.use('/schedule', authMiddleware.verifyToken, schedulerouter);    // 스케줄 관련 라우터
-
+app.use('/state', authMiddleware.verifyToken, stateRouter); // 상태관련 라우터
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); //프로필 사진파일 업로드
 
 
