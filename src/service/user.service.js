@@ -53,25 +53,17 @@ export const userService = {
     return rows[0];
   },
 
-  deleteUser: async (email, password) => {
+  deleteUser: async (email) => {
     const connection = await dbConnect();
     const query = `SELECT * FROM user WHERE email = ? AND deleted_at IS NULL`;
     const [rows] = await connection.execute(query, [email]);
 
     if (rows.length === 0) {
-      throw new Error('Bad Request+이메일 또는 비밀번호가 잘못되었습니다.');
-    }
-
-    const user = rows[0];
-
-    // 비밀번호 검증
-    const isPasswordValid = await secretPassword.verifyPassword(password, user.password);
-    if (!isPasswordValid) {
-      throw new Error('Bad Request+이메일 또는 비밀번호가 잘못되었습니다.');
+      throw new Error('Bad Request+존재하지 않는 사용자');
     }
 
     const deleteQuery = `UPDATE user SET deleted_at = CURRENT_TIMESTAMP WHERE email = ?`;
-    const [result] = await connection.execute(deleteQuery, [user.email]);
+    const [result] = await connection.execute(deleteQuery, [email]);
 
     return result;
   },
