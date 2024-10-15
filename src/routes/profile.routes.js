@@ -1,15 +1,17 @@
 import { Router } from 'express';
-import { profileController } from '../controller/profile.controller.js';
-import { upload } from '../middleware/upload.middleware.js';
+import { updatePhoneNumber, updateProfileImage, getProfile } from '../controller/profile.controller.js';
+import { authMiddleware } from '../middleware/auth.middleware.js';
+import { upload } from '../middleware/upload.middleware.js';  
 
 const router = Router();
 
-router.get('/:id', profileController.getProfile); //프로필 조회 라우트
+// 프로필 조회
+router.get('/', authMiddleware.verifyToken, getProfile);
 
-router.get('/:id/status', profileController.getProfileStatus); //상태 조회
+// 전화번호 업데이트
+router.put('/phone', authMiddleware.verifyToken, updatePhoneNumber);
 
-router.put('/:id', upload.single('profileImage'), profileController.updateProfile); //프로필 업데이트 라우트
-
-router.put('/:id/status', profileController.updateProfileStatus);//상태업데이트
+// 프로필 사진 업데이트
+router.put('/image', authMiddleware.verifyToken, upload.single('profileImage'), updateProfileImage);
 
 export const profilerouter = router;
