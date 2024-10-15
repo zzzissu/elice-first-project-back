@@ -18,7 +18,7 @@ export const userService = {
     const uuid = uuidv4();
 
     // 사용자 생성
-    const query = `INSERT INTO user (uuid, name, email, password, phone, birth) VALUES (?, ?, ?, ?, ?, ?)`;
+    const query = `INSERT INTO user (id, name, email, password, phone, birth) VALUES (?, ?, ?, ?, ?, ?)`;
     const [result] = await connection.execute(query, [uuid, name, email, hashedPassword, phone, birth]);
     return result; // 새로 생성된 사용자 정보 반환
   },
