@@ -1,15 +1,10 @@
 import { Router } from 'express';
 import { profileController } from '../controller/profile.controller.js';
-import { upload } from '../middleware/upload.middleware.js';
+import { authMiddleware } from '../middleware/auth.middleware.js';
 
 const router = Router();
 
-router.get('/:id', profileController.getProfile); //프로필 조회 라우트
-
-router.get('/:id/status', profileController.getProfileStatus); //상태 조회
-
-router.put('/:id', upload.single('profileImage'), profileController.updateProfile); //프로필 업데이트 라우트
-
-router.put('/:id/status', profileController.updateProfileStatus);//상태업데이트
+router.get('/', authMiddleware.verifyToken, profileController.getProfile); //유저 정보 가져오기
+router.put('/', authMiddleware.verifyToken, profileController.updateProfile); //유저 정보 업데이트
 
 export const profilerouter = router;
