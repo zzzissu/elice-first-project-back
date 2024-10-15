@@ -81,7 +81,7 @@ export const userController = {
 
   deleteUser: async (req, res, next) => {
     try {
-      const { email, password } = req.body;
+      const email = req.user.email;
       const user = await userService.deleteUser(email, password);
       res.status(200).json(user);
     } catch(e) {
