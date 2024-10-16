@@ -32,16 +32,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use('/api/users', userRouter);           
-app.use('/profile', profilerouter);      //프로필 관련 라우터
-app.use('/schedule', schedulerouter);    // 스케줄 관련 라우터
-app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); //프로필 사진파일 업로드
-app.use('/state', stateRouter); // 상태관련 라우터
+app.use('/api/profile', profilerouter);      //프로필 관련 라우터
+app.use('/api/schedule', schedulerouter);    // 스케줄 관련 라우터
+app.use('/api/uploads', express.static(path.join(__dirname, 'uploads'))); //프로필 사진파일 업로드
+app.use('/api/state', stateRouter); // 상태관련 라우터
 app.use('/api/announcement', announcementRouter);
 app.use('/api/approval', approvalRouter);
 app.use('/api/email', emailRouter);
 
 app.use(errorHandler);
-app.listen(3000, () => {
+app.listen(4000, () => {
   console.log("서버 실행");
 });
 

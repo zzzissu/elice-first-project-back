@@ -20,7 +20,7 @@ export const userController = {
       const result = await userService.signUp(req.body);
       console.log(result);
 
-      res.status(201).json(result);
+      res.status(201).json({ message: '회원가입 성공'});
     } catch(e) {
       next(e);
     }
@@ -67,11 +67,30 @@ export const userController = {
     }
   },
 
+  requestRestCode: async (req, res, next) => {
+    try {
+      const { resetCode } = req.body;
+
+      const email = await userService.requestRestCode(resetCode);
+
+      req.session.email = email;
+
+      res.status(200).json({ message: '코드 인증 완료' });
+    } catch (e) {
+      next(e);
+    }
+  },
+
   resetPassword: async (req, res, next) => {
     try {
-      const { email, resetCode, newPassword } = req.body;
+      const { newPassword } = req.body;
+      const email = req.session.email;
 
-      const user = await userService.resetPassword(email, resetCode, newPassword);
+      if (!email) throw new Error('Bad Request+세션이 없거나 만료됨')
+
+      const user = await userService.resetPassword(newPassword, email);
+
+      req.session.destroy();
 
       res.status(200).json(user);
     } catch (e) {
@@ -82,7 +101,7 @@ export const userController = {
   deleteUser: async (req, res, next) => {
     try {
       const email = req.user.email;
-      const user = await userService.deleteUser(email, password);
+      const user = await userService.deleteUser(email);
       res.status(200).json(user);
     } catch(e) {
       next(e);
