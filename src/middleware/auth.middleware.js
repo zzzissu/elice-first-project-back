@@ -7,7 +7,7 @@ export const authMiddleware = {
       const token = req.headers.authorization?.split(' ')[1] || req.cookies.auth_token;
 
       if (!token) {
-        const error = new Error("Unauthorized: 토큰이 없습니다.");
+        const error = new Error("Unauthorized+토큰이 없습니다.");
         error.status = 401;
         throw error;
       }
@@ -17,9 +17,12 @@ export const authMiddleware = {
       req.user = decoded; // 검증된 사용자 정보를 요청 객체에 추가
       next(); // 다음 미들웨어나 라우터로 이동
     } catch (e) {
-      if (e.name === 'JsonWebTokenError') {
+      if (e.name === 'TokenExpiredError') {
         e.status = 401;
-        e.message = 'Unauthorized: 잘못된 토큰입니다.';
+        e.message = 'Unauthorized+토큰이 만료되었습니다.';
+      } else if (e.name === 'JsonWebTokenError') {
+        e.status = 401;
+        e.message = 'Unauthorized+잘못된 토큰입니다.';
       }
       next(e);
     }

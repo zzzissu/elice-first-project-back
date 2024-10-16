@@ -8,6 +8,8 @@ export const scheduleController = {
       const { title, content, makePublic, createdAt, finishedAt } = req.body;
       const userId = req.user.id;
 
+      if (!userId) throw new Error ('Bad Request+유저 정보를 찾을 수 없음');
+
       if (!title || !content || !createdAt) {
         return res.status(400).json({ message: "필수 정보가 부족합니다." });
       }
@@ -24,6 +26,8 @@ export const scheduleController = {
     try {
       const userId = req.user.id;
       const schedules = await scheduleService.getSchedulesByUser(userId);
+
+      if (!userId) throw new Error ('Bad Request+유저 정보를 찾을 수 없음');
 
       if (!schedules.length) {
         return res.status(404).json({ message: "해당 사용자의 일정이 없습니다." });
