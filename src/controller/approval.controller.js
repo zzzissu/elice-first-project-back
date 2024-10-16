@@ -9,6 +9,8 @@ export const approvalController = {
       const user_id = req.user.id;
       const annual_leave = req.user.annual_leave;
 
+      if (!user_id) throw new Error ('Bad Request+유저 정보를 찾을 수 없음');
+
       // 날짜 차이를 구하기 위한 계산
       const startDate = new Date(start_date);
       const finishDate = new Date(finish_date);
@@ -34,6 +36,8 @@ export const approvalController = {
       const user_name = req.user.name;
       const user_id = req.user.id;
 
+      if (!user_id) throw new Error ('Bad Request+유저 정보를 찾을 수 없음');
+
       const result = await approvalService
       .postOutside({ start_date, finish_date, content }, user_name, user_id);
       res.status(201).json(result);
@@ -48,6 +52,8 @@ export const approvalController = {
       const { title, start_date, finish_date, content, request, significant } = req.body;
       const user_name = req.user.name;
       const user_id = req.user.id;
+
+      if (!user_id) throw new Error ('Bad Request+유저 정보를 찾을 수 없음');
 
       const result = await approvalService
       .postBusinessReport({ title, start_date, finish_date, content, request, significant }, user_name, user_id);
