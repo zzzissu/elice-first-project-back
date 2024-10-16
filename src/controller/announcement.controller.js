@@ -10,7 +10,7 @@ export const announcementController = {
 
       if (!user_id) throw new Error ('Bad Request+유저 정보를 찾을 수 없음');
 
-      if (authority === 0) throw new Error('Unauthorized+권한 없음');
+      if (authority === 0) throw new Error('Bad Request+권한 없음');
 
       const result = await announcementService.postAnnounce({ title, content }, user_name, user_id);
       res.status(201).json(result);
