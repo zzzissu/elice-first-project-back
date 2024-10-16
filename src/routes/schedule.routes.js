@@ -14,9 +14,9 @@ router.get('/team',authMiddleware.verifyToken, scheduleController.getSchedulesBy
 router.get('/user',authMiddleware.verifyToken, scheduleController.getSchedulesByUser);
 
 // 개인 일정 삭제 (make_public = false)
-router.delete('/user/schedule/:Id',authMiddleware.verifyToken, scheduleController.deleteScheduleByUser);
+router.delete('/user/:Id',authMiddleware.verifyToken, scheduleController.deleteScheduleByUser);
 
 // 팀별 일정 삭제 (make_public = true)
-router.delete('/team/schedule/:Id', authMiddleware.verifyToken,scheduleController.deleteScheduleByTeam);
+router.delete('/team/:Id', authMiddleware.verifyToken,scheduleController.deleteScheduleByTeam);
 
 export const schedulerouter = router;
