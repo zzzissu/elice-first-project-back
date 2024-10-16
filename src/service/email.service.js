@@ -14,7 +14,7 @@ export const emailService = {
   // 받은 이메일 조회
   getReceivedEmail: async (userEmail) => {
     const connection = await dbConnect();
-    const query = `SELECT e.title, e.content, e.user_email, e.target_email, e.created_at, m.is_checked
+    const query = `SELECT e.id, e.title, e.content, e.user_email, e.target_email, e.created_at, m.is_checked
                     FROM email e
                     JOIN email_map m ON e.id = m.email_id
                     WHERE m.user_email = ? AND e.target_email = ? AND m.is_deleted = 0`;
@@ -26,7 +26,7 @@ export const emailService = {
   // 보낸 이메일 조회
   getSentEmail: async (userEmail) => {
     const connection = await dbConnect();
-    const query = `SELECT e.title, e.content, e.user_email, e.target_email, e.created_at, m.is_checked
+    const query = `SELECT e.id, e.title, e.content, e.user_email, e.target_email, e.created_at, m.is_checked
                     FROM email e
                     JOIN email_map m ON e.id = m.email_id
                     WHERE e.user_email = ? AND m.user_email = ? AND m.is_deleted = 0`;
