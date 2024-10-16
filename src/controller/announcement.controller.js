@@ -8,6 +8,8 @@ export const announcementController = {
       const user_id = req.user.id;
       const authority = req.user.authority;
 
+      if (!user_id) throw new Error ('Bad Request+유저 정보를 찾을 수 없음');
+
       if (authority === 0) throw new Error('Unauthorized+권한 없음');
 
       const result = await announcementService.postAnnounce({ title, content }, user_name, user_id);
@@ -30,6 +32,8 @@ export const announcementController = {
     try {
       const user_id = req.user.id;
       const { schedule_id } = req.params;
+
+      if (!user_id) throw new Error ('Bad Request+유저 정보를 찾을 수 없음');
 
       const announcement = await announcementService.findAnnounceById(schedule_id);
       if (!announcement) throw new Error('Not Found+공지사항을 찾을 수 없습니다.');

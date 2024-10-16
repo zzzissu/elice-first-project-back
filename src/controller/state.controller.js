@@ -6,6 +6,8 @@ export const updateState = async (req, res, next) => {
     const userId = req.user.id; 
     const { state } = req.body;
 
+    if (!userId) throw new Error ('Bad Request+유저 정보를 찾을 수 없음');
+
     if (!state) {
       return res.status(400).json({ message: '상태 값이 필요합니다.' });
     }
@@ -24,6 +26,8 @@ export const postStatusMessage = async (req, res, next) => {
   try {
     const userId = req.user.id;
     const { statusMessage } = req.body;
+
+    if (!userId) throw new Error ('Bad Request+유저 정보를 찾을 수 없음');
 
     // 유저 상태가 '출장중'인지 확인
     const userState = await stateService.getStateByUserId(userId);
@@ -45,6 +49,8 @@ export const postStatusMessage = async (req, res, next) => {
 export const getStatusMessage = async (req, res, next) => {
   try {
     const userId = req.user.id;
+
+    if (!userId) throw new Error ('Bad Request+유저 정보를 찾을 수 없음');
 
     // 상태 메시지 조회
     const statusMessage = await stateService.getStatusMessage(userId);
