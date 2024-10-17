@@ -49,7 +49,7 @@ export const scheduleModel = {
     const db = await dbConnect();
     const query = `
       UPDATE schedule
-      SET deleted_at = NOW()
+      SET deleted_at = CURRENT_TIMESTAMP
       WHERE id = ? AND make_public = false
     `;
     await db.execute(query, [scheduleId]);
@@ -60,7 +60,7 @@ export const scheduleModel = {
     const db = await dbConnect();
     const query = `
       UPDATE schedule
-      SET deleted_at = NOW()
+      SET deleted_at = CURRENT_TIMESTAMP
       WHERE id = ? AND make_public = true
     `;
     await db.execute(query, [scheduleId]);
