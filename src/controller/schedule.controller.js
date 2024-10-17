@@ -7,7 +7,7 @@ export const scheduleController = {
     try {
       const { title, content, makePublic, createdAt, finishedAt } = req.body;
       const userId = req.user.id;
-
+      
       if (!userId) throw new Error ('Unauthorized+유저 정보를 찾을 수 없음');
 
       if (!title || !content || !createdAt) {
@@ -57,7 +57,7 @@ export const scheduleController = {
   // 개인일정 -> 팀별일정
   changeToPublic: async (req, res, next) => {
     try {
-      const scheduleId = req.params;
+      const { scheduleId } = req.params;
       await scheduleService.changeToPublic(scheduleId);
       res.status(200).json({ message: "일정이 성공적으로 변경되었습니다." });
     } catch (e) {
@@ -68,7 +68,7 @@ export const scheduleController = {
   // 개인 일정 삭제 (make_public = false)
   deleteScheduleByUser: async (req, res, next) => {
     try {
-      const scheduleId = req.params;
+      const { scheduleId } = req.params;
       await scheduleService.deleteScheduleByUser(scheduleId);
       res.status(200).json({ message: "일정이 성공적으로 삭제되었습니다." });
     } catch (e) {
@@ -79,7 +79,7 @@ export const scheduleController = {
   // 팀별 일정 삭제 (make_public = true)
   deleteScheduleByTeam: async (req, res, next) => {
     try {
-      const scheduleId = req.params;
+      const { scheduleId } = req.params;
       await scheduleService.deleteScheduleByTeam(scheduleId);
       res.status(200).json({ message: "팀별 일정이 성공적으로 삭제되었습니다." });
     } catch (e) {
