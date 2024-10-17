@@ -47,7 +47,7 @@ export const userController = {
       const userId = req.user.id;
       const user = await userService.getFindUser(userId);
 
-      if (!userId) throw new Error ('Bad Request+유저 정보를 찾을 수 없음');
+      if (!userId) throw new Error ('Unauthorized+유저 정보를 찾을 수 없음');
 
       res.status(200).json(user);
     } catch(e) {
@@ -99,7 +99,7 @@ export const userController = {
     try {
       const email = req.user.email;
 
-      if (!email) throw new Error ('Bad Request+유저 정보를 찾을 수 없음');
+      if (!email) throw new Error ('Unauthorized+유저 정보를 찾을 수 없음');
 
       const user = await userService.deleteUser(email);
       res.status(200).json(user);

@@ -35,7 +35,7 @@ export const emailController = {
       const userEmail = req.user.email;
       const newEmailCount = await emailService.checkNewEmail(userEmail);
 
-      if (!userEmail) throw new Error ('Bad Request+유저 정보를 찾을 수 없음');
+      if (!userEmail) throw new Error ('Unauthorized+유저 정보를 찾을 수 없음');
 
       res.status(200).json({
         newEmailCount, // 새로운 이메일 개수 반환
@@ -53,7 +53,7 @@ export const emailController = {
       const userEmail = req.user.email;
       const email = await emailService.checkedEmail(email_id, userEmail);
 
-      if (!userEmail) throw new Error ('Bad Request+유저 정보를 찾을 수 없음');
+      if (!userEmail) throw new Error ('Unauthorized+유저 정보를 찾을 수 없음');
 
       res.status(200).json(email);
     } catch(e) {
@@ -68,7 +68,7 @@ export const emailController = {
       const { title, content, target_email } = req.body;
       const userEmail = req.user.email;
 
-      if (!userEmail) throw new Error ('Bad Request+유저 정보를 찾을 수 없음');
+      if (!userEmail) throw new Error ('Unauthorized+유저 정보를 찾을 수 없음');
 
       if (!title || !content) throw new Error('Bad Request+제목이나 내용이 없습니다.');
 
@@ -89,7 +89,7 @@ export const emailController = {
       const { email_id } = req.params;
       const userEmail = req.user.email;
 
-      if (!userEmail) throw new Error ('Bad Request+유저 정보를 찾을 수 없음');
+      if (!userEmail) throw new Error ('Unauthorized+유저 정보를 찾을 수 없음');
 
       const result = await emailService.deleteEmail(email_id, userEmail);
 
