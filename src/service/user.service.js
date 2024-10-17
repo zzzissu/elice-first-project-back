@@ -80,13 +80,10 @@ export const userService = {
       throw new Error('Bad Request+유효하지 않은 인증 코드이거나 코드가 만료되었습니다.');
     }
 
-    // 이메일 추출
-    const email = rows[0].email;
-
-    return email;
+    return rows[0];
   },
 
-  resetPassword: async (newPassword, email) => {
+  resetPassword: async (email, newPassword) => {
     const connection = await dbConnect();
     
     // 비밀번호 해시화
