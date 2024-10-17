@@ -16,7 +16,7 @@ export const scheduleModel = {
     const db = await dbConnect();
     const query = `
       SELECT * FROM schedule
-      WHERE user_id = ? AND deleted_at IS NULL AND make_public = false
+      WHERE user_id = ? AND deleted_at IS NULL AND make_public = false AND NOT type = 'announcement'
     `;
     const [rows] = await db.execute(query, [userId]);
     return rows;
@@ -27,7 +27,7 @@ export const scheduleModel = {
     const db = await dbConnect();
     const query = `
       SELECT * FROM schedule
-      WHERE make_public = true AND deleted_at IS NULL
+      WHERE make_public = true AND deleted_at IS NULL AND NOT type = 'announcement'
     `;
     const [rows] = await db.execute(query);
     return rows;
@@ -39,7 +39,7 @@ export const scheduleModel = {
     const query = `
       UPDATE schedule
       SET make_public = true
-      WHERE id = ? AND make_public = false
+      WHERE id = ? AND make_public = false AND NOT type = 'announcement'
     `; 
     await db.execute(query, [scheduleId]);
   },
@@ -50,7 +50,7 @@ export const scheduleModel = {
     const query = `
       UPDATE schedule
       SET deleted_at = CURRENT_TIMESTAMP
-      WHERE id = ? AND make_public = false
+      WHERE id = ? AND make_public = false AND NOT type = 'announcement'
     `;
     await db.execute(query, [scheduleId]);
   },
@@ -61,7 +61,7 @@ export const scheduleModel = {
     const query = `
       UPDATE schedule
       SET deleted_at = CURRENT_TIMESTAMP
-      WHERE id = ? AND make_public = true
+      WHERE id = ? AND make_public = true AND NOT type = 'announcement'
     `;
     await db.execute(query, [scheduleId]);
   }
