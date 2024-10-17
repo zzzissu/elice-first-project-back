@@ -69,6 +69,8 @@ export const scheduleController = {
   deleteScheduleByUser: async (req, res, next) => {
     try {
       const { scheduleId } = req.params;
+      if (!scheduleId) throw new Error('Bad Request+일정 ID가 없습니다.');
+
       await scheduleService.deleteScheduleByUser(scheduleId);
       res.status(200).json({ message: "일정이 성공적으로 삭제되었습니다." });
     } catch (e) {
@@ -80,6 +82,8 @@ export const scheduleController = {
   deleteScheduleByTeam: async (req, res, next) => {
     try {
       const { scheduleId } = req.params;
+      if (!scheduleId) throw new Error('Bad Request+일정 ID가 없습니다.');
+      
       await scheduleService.deleteScheduleByTeam(scheduleId);
       res.status(200).json({ message: "팀별 일정이 성공적으로 삭제되었습니다." });
     } catch (e) {
