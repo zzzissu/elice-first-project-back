@@ -54,6 +54,17 @@ export const scheduleController = {
     }
   },
 
+  // 개인일정 -> 팀별일정
+  changeToPublic: async (req, res, next) => {
+    try {
+      const scheduleId = req.params;
+      await scheduleService.changeToPublic(scheduleId);
+      res.status(200).json({ message: "일정이 성공적으로 변경되었습니다." });
+    } catch (e) {
+      next(e);
+    }
+  },
+
   // 개인 일정 삭제 (make_public = false)
   deleteScheduleByUser: async (req, res, next) => {
     try {

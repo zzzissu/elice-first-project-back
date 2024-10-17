@@ -13,6 +13,10 @@ export const scheduleService = {
   addSchedule: async (scheduleData) => {
     return await scheduleModel.addSchedule(scheduleData);
   },
+  //개인 일정 -> 팀별 일정
+  changeToPublic: async (scheduleId) => {
+    return await scheduleModel.changeToPublic(scheduleId);
+  },
   //개인 일정 삭제
   deleteScheduleByUser: async (scheduleId) => {
     return await scheduleModel.deleteScheduleByUser(scheduleId);

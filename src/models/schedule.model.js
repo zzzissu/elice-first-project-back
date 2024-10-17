@@ -33,6 +33,17 @@ export const scheduleModel = {
     return rows;
   },
 
+  // 개인일정 -> 팀별일정
+  changeToPublic: async (scheduleId) => {
+    const db = await dbConnect();
+    const query = `
+      UPDATE schedule
+      SET make_public = true
+      WHERE id = ? AND make_public = false
+    `; 
+    await db.execute(query, [scheduleId]);
+  },
+
   // 개인 일정 삭제 (make_public = false)
   deleteScheduleByUser: async (scheduleId) => {
     const db = await dbConnect();
