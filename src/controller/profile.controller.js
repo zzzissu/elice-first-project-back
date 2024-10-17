@@ -4,7 +4,7 @@ import path from 'path';
 // 프로필 조회
 export const getProfile = async (req, res, next) => {
     try {
-        const userId = req.user.id;  
+        const userId = req.user.id;
         const profile = await profileService.getUserProfile(userId);
 
         if (!userId) throw new Error ('Bad Request+유저 정보를 찾을 수 없음');
@@ -22,8 +22,8 @@ export const getProfile = async (req, res, next) => {
 // 전화번호만 업데이트
 export const updatePhoneNumber = async (req, res, next) => {
     try {
-        const userId = req.user.id;  
-        const { phone } = req.body;  
+        const userId = req.user.id;
+        const { phone } = req.body;
 
         if (!userId) throw new Error ('Bad Request+유저 정보를 찾을 수 없음');
 
@@ -41,7 +41,7 @@ export const updatePhoneNumber = async (req, res, next) => {
 // 프로필 사진 업데이트
 export const updateProfileImage = async (req, res, next) => {
     try {
-        const userId = req.user.id;  
+        const userId = req.user.id;
 
         if (!userId) throw new Error ('Bad Request+유저 정보를 찾을 수 없음');
 
@@ -49,10 +49,13 @@ export const updateProfileImage = async (req, res, next) => {
             return res.status(400).json({ message: "프로필 사진이 필요합니다." });
         }
 
-        const profileImage = path.join('uploads', req.file.filename);  // 업로드된 파일 경로 설정
+        const profileImage = `/uploads/${req.file.filename}`;  // 업로드된 파일 경로 설정
 
         await profileService.updateProfileImage(userId, profileImage);
-        res.status(200).json({ message: "프로필 사진이 성공적으로 업데이트되었습니다." });
+
+        const imageUrl = `${req.protocol}://${req.get('host')}${profileImage}`;
+
+        res.status(200).json({ message: "프로필 사진이 성공적으로 업데이트되었습니다.", imageUrl: imageUrl });
     } catch (e) {
         next(e);
     }
