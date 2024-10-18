@@ -7,6 +7,7 @@ export const scheduleController = {
     try {
       const { title, content, makePublic, createdAt, finishedAt } = req.body;
       const userId = req.user.id;
+      const userName = req.user.name;
       
       if (!userId) throw new Error ('Unauthorized+유저 정보를 찾을 수 없음');
 
@@ -14,7 +15,7 @@ export const scheduleController = {
         return res.status(400).json({ message: "필수 정보가 부족합니다." });
       }
 
-      await scheduleService.addSchedule({ userId, title, content, makePublic, createdAt, finishedAt });
+      await scheduleService.addSchedule({ userId, title, content, makePublic, createdAt, finishedAt, userName });
       res.status(201).json({ message: "일정이 성공적으로 추가되었습니다." });
     } catch (e) {
       next(e);
@@ -26,6 +27,9 @@ export const scheduleController = {
     try {
       const userId = req.user.id;
       const schedules = await scheduleService.getSchedulesByUser(userId);
+
+      console.log('userId:', userId);
+      console.log('schedules:', schedules);
 
       if (!userId) throw new Error ('Unauthorized+유저 정보를 찾을 수 없음');
 
@@ -58,6 +62,9 @@ export const scheduleController = {
   changeToPublic: async (req, res, next) => {
     try {
       const { scheduleId } = req.params;
+
+      console.log('scheduleId:', scheduleId);
+
       await scheduleService.changeToPublic(scheduleId);
       res.status(200).json({ message: "일정이 성공적으로 변경되었습니다." });
     } catch (e) {

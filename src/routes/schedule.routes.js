@@ -14,7 +14,7 @@ router.get('/team',authMiddleware.verifyToken, scheduleController.getSchedulesBy
 router.get('/user',authMiddleware.verifyToken, scheduleController.getSchedulesByUser);
 
 // 개인일정 -> 팀별일정
-router.get('/topublic/:scheduleId', scheduleController.changeToPublic);
+router.patch('/topublic/:scheduleId', scheduleController.changeToPublic);
 
 // 개인 일정 삭제 (make_public = false)
 router.delete('/user/:scheduleId',authMiddleware.verifyToken, scheduleController.deleteScheduleByUser);
