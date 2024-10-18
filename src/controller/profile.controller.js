@@ -12,8 +12,10 @@ export const getProfile = async (req, res, next) => {
         if (!profile) {
             return res.status(404).json({ message: "프로필을 찾을 수 없습니다." });
         }
-        const imageUrl = `${req.protocol}://${req.get('host')}${profile.profile_image}`;
-        res.status(200).json({...profile, profile_image: imageUrl);
+        
+        const imageUrl = `${req.protocol}://${req.get('host')}/${profile.profile_image}`;
+
+        res.status(200).json({ ...profile, profile_image: imageUrl });
     } catch (e) {
         next(e);
     }
