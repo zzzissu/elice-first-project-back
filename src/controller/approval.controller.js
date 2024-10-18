@@ -4,10 +4,10 @@ export const approvalController = {
   // 결재 현황 조회
   getApproval: async (req, res, next) => {
     try {
-      const userName = req.user.name;
-      if (!userName) throw new Error ('Unauthorized+유저 정보를 찾을 수 없음');
+      const userId = req.user.id;
+      if (!userId) throw new Error ('Unauthorized+유저 정보를 찾을 수 없음');
 
-      const result = await approvalService.getApproval(userName);
+      const result = await approvalService.getApproval(userId);
       res.status(200).json(result);
     } catch(e) {
       next(e);
@@ -35,7 +35,7 @@ export const approvalController = {
       }
 
       const result = await approvalService
-      .postAnnual({ start_date, finish_date, content }, user_name, user_id);
+      .postAnnual({ start_date, finish_date, content }, user_name, user_id, daysDiff);
       res.status(201).json(result);
     } catch(e) {
       next(e);
