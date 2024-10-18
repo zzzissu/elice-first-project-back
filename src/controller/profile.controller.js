@@ -1,5 +1,5 @@
 import { profileService } from '../service/profile.service.js';
-import path from 'path';
+
 
 // 프로필 조회
 export const getProfile = async (req, res, next) => {
@@ -13,9 +13,9 @@ export const getProfile = async (req, res, next) => {
             return res.status(404).json({ message: "프로필을 찾을 수 없습니다." });
         }
         
-        const imageUrl = `${req.protocol}://${req.get('host')}${profile.profile_image}?t=${new Date().getTime()}`;
+        const imageUrl = `${req.protocol}://${req.get('host')}${profile.profile_image}}`;
 
-        res.status(200).json({ ...profile, profile_image: imageUrl });
+        res.status(200).json({ ...profile, imageUrl : imageUrl });
     } catch (e) {
         next(e);
     }
@@ -51,7 +51,7 @@ export const updateProfileImage = async (req, res, next) => {
             return res.status(400).json({ message: "프로필 사진이 필요합니다." });
         }
 
-        const profileImage = `/uploads/${req.file.filename}`;  // 업로드된 파일 경로 설정
+        const profileImage = `/api/uploads/${req.file.filename}`;  // 업로드된 파일 경로 설정
 
         await profileService.updateProfileImage(userId, profileImage);
 
