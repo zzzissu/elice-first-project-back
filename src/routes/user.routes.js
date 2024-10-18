@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { userController } from "../controller/user.controller.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
-import { sessionMiddleware } from "../middleware/session.middleware.js";
 
 const router = Router();
 
@@ -18,10 +17,10 @@ router.get('/', authMiddleware.verifyToken, userController.getFindUser);
 router.post('/password/request', userController.requestResetPassword);
 
 // 비밀번호 재설정 코드 요청
-router.post('/code/request', sessionMiddleware, userController.requestRestCode);
+router.post('/code/request', userController.requestRestCode);
 
 // 비밀번호 재설정
-router.post('/password/reset', sessionMiddleware, userController.resetPassword);
+router.post('/password/reset', userController.resetPassword);
 
 // 회원 탈퇴
 router.delete('/delete', authMiddleware.verifyToken, userController.deleteUser);

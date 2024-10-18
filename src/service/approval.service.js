@@ -1,6 +1,19 @@
 import { dbConnect } from '../db/db.js';
 
 export const approvalService = {
+  // 결재 현황 조회
+  getApproval: async (userName) => {
+    const connection = await dbConnect();
+    const query = `SELECT
+                   SUM(CASE WHEN status = '결재대기중' THEN 1 ELSE 0 END) AS pending_count,
+                   SUM(CASE WHEN status = '결재완료' THEN 1 ELSE 0 END) AS approved_count,
+                   SUM(CASE WHEN status = '반려됨' THEN 1 ELSE 0 END) AS rejected_count
+                   FROM approval
+                   WHERE user_name = ?`;
+    const [rows] = await connection.execute(query, [userName]);
+    return rows[0];
+  },
+
   // 연차 신청서
   postAnnual: async (annual, user_name, user_id) => {
     const connection = await dbConnect();

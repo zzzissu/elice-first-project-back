@@ -7,13 +7,15 @@ export const getProfile = async (req, res, next) => {
         const userId = req.user.id;
         const profile = await profileService.getUserProfile(userId);
 
-        if (!userId) throw new Error ('Bad Request+유저 정보를 찾을 수 없음');
+        if (!userId) throw new Error ('Unauthorized+유저 정보를 찾을 수 없음');
 
         if (!profile) {
             return res.status(404).json({ message: "프로필을 찾을 수 없습니다." });
         }
 
-        res.status(200).json(profile);
+        res.status(200).json({
+            ...profile,
+            profileImageUrl: `${req.protocol}://${req.get('host')}/uploads/${profileData.profile_image}`});
     } catch (e) {
         next(e);
     }
@@ -25,7 +27,7 @@ export const updatePhoneNumber = async (req, res, next) => {
         const userId = req.user.id;
         const { phone } = req.body;
 
-        if (!userId) throw new Error ('Bad Request+유저 정보를 찾을 수 없음');
+        if (!userId) throw new Error ('Unauthorized+유저 정보를 찾을 수 없음');
 
         if (!phone) {
             return res.status(400).json({ message: "전화번호가 필요합니다." });
@@ -43,7 +45,7 @@ export const updateProfileImage = async (req, res, next) => {
     try {
         const userId = req.user.id;
 
-        if (!userId) throw new Error ('Bad Request+유저 정보를 찾을 수 없음');
+        if (!userId) throw new Error ('Unauthorized+유저 정보를 찾을 수 없음');
 
         if (!req.file) {
             return res.status(400).json({ message: "프로필 사진이 필요합니다." });

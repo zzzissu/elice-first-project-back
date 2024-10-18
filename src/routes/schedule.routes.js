@@ -13,10 +13,13 @@ router.get('/team',authMiddleware.verifyToken, scheduleController.getSchedulesBy
 // 개인 일정 조회
 router.get('/user',authMiddleware.verifyToken, scheduleController.getSchedulesByUser);
 
+// 개인일정 -> 팀별일정
+router.get('/topublic/:Id', scheduleController.changeToPublic);
+
 // 개인 일정 삭제 (make_public = false)
-router.delete('/user/:Id',authMiddleware.verifyToken, scheduleController.deleteScheduleByUser);
+router.delete('/user/:scheduleId',authMiddleware.verifyToken, scheduleController.deleteScheduleByUser);
 
 // 팀별 일정 삭제 (make_public = true)
-router.delete('/team/:Id', authMiddleware.verifyToken,scheduleController.deleteScheduleByTeam);
+router.delete('/team/:scheduleId', authMiddleware.verifyToken,scheduleController.deleteScheduleByTeam);
 
 export const schedulerouter = router;

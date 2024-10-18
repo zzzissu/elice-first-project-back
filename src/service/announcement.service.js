@@ -21,7 +21,7 @@ export const announcementService = {
   getAllAnnounce: async () => {
     const connection = await dbConnect();
 
-    const query = `SELECT title, content, user_name, created_at
+    const query = `SELECT id, title, content, user_name, created_at
                    FROM schedule
                    WHERE type = 'announcement' AND deleted_at IS NULL
                    ORDER BY created_at DESC`;

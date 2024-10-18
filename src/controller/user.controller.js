@@ -47,7 +47,7 @@ export const userController = {
       const userId = req.user.id;
       const user = await userService.getFindUser(userId);
 
-      if (!userId) throw new Error ('Bad Request+유저 정보를 찾을 수 없음');
+      if (!userId) throw new Error ('Unauthorized+유저 정보를 찾을 수 없음');
 
       res.status(200).json(user);
     } catch(e) {
@@ -73,9 +73,7 @@ export const userController = {
     try {
       const { resetCode } = req.body;
 
-      const email = await userService.requestRestCode(resetCode);
-
-      req.session.email = email;
+      await userService.requestRestCode(resetCode);
 
       res.status(200).json({ message: '코드 인증 완료' });
     } catch (e) {
@@ -85,14 +83,11 @@ export const userController = {
 
   resetPassword: async (req, res, next) => {
     try {
-      const { newPassword } = req.body;
-      const email = req.session.email;
+      const { email, newPassword } = req.body;
 
-      if (!email) throw new Error('Bad Request+세션이 없거나 만료됨')
+      if (!email || !newPassword) throw new Error('Bad Request+이메일이나 비밀번호가 없습니다.')
 
-      const user = await userService.resetPassword(newPassword, email);
-
-      req.session.destroy();
+      const user = await userService.resetPassword(email, newPassword);
 
       res.status(200).json(user);
     } catch (e) {
@@ -104,7 +99,7 @@ export const userController = {
     try {
       const email = req.user.email;
 
-      if (!email) throw new Error ('Bad Request+유저 정보를 찾을 수 없음');
+      if (!email) throw new Error ('Unauthorized+유저 정보를 찾을 수 없음');
 
       const user = await userService.deleteUser(email);
       res.status(200).json(user);
