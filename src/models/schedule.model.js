@@ -2,13 +2,13 @@ import { dbConnect } from '../db/db.js';
 
 export const scheduleModel = {
   // 일정 추가
-  addSchedule: async ({ userId, title, content, makePublic, createdAt, finishedAt }) => {
+  addSchedule: async ({ userId, title, content, makePublic, createdAt, finishedAt, userName }) => {
     const db = await dbConnect(); 
     const query = `
-      INSERT INTO schedule (user_id, title, content, make_public, created_at, finished_at)
-      VALUES (?, ?, ?, ?, ?, ?)
+      INSERT INTO schedule (user_id, title, content, make_public, created_at, finished_at, user_name)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
-    await db.execute(query, [userId, title, content, makePublic, createdAt, finishedAt]);
+    await db.execute(query, [userId, title, content, makePublic, createdAt, finishedAt, userName]);
   },
 
   // 개인 일정 조회 (make_public = false)
@@ -40,10 +40,15 @@ export const scheduleModel = {
     const db = await dbConnect();
     const query = `
       UPDATE schedule
-      SET make_public = true
+      SET make_public = 1
       WHERE id = ? AND make_public = false AND type is NULL
     `; 
-    await db.execute(query, [scheduleId]);
+    const [result] = await db.execute(query, [scheduleId]);
+
+    if (result.affectedRows === 0) {
+      throw new Error('Bad Request+일정을 찾을 수 없거나 이미 공개된 일정입니다.');
+    }
+    console.log('Update result:', result);
   },
 
   // 개인 일정 삭제 (make_public = false)
