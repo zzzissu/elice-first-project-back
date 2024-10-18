@@ -15,7 +15,7 @@ export const getProfile = async (req, res, next) => {
 
         res.status(200).json({
             ...profile,
-            profileImageUrl: `${req.protocol}://${req.get('host')}/uploads/${profileData.profile_image}`});
+            profileImageUrl: `${req.protocol}://${req.get('host')}/uploads/${profile.profile_image}`});
     } catch (e) {
         next(e);
     }
