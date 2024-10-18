@@ -9,20 +9,24 @@ export const approvalService = {
     const [finded] = await connection.execute(findApprovalQuery, [userId]);
 
     if (finded.length === 0) {
+      const userQuery = `SELECT annual_leave FROM user WHERE id = ?`;
+      const [userRows] = await connection.execute(userQuery, [userId]);
 
       return {
         pending_count: 0,
         approved_count: 0,
         rejected_count: 0,
+        annual_leave: userRows[0]?.annual_leave || 0
       };
     }
 
     const query = `SELECT
-                   SUM(CASE WHEN status = '결재대기중' THEN 1 ELSE 0 END) AS pending_count,
-                   SUM(CASE WHEN status = '결재완료' THEN 1 ELSE 0 END) AS approved_count,
-                   SUM(CASE WHEN status = '반려됨' THEN 1 ELSE 0 END) AS rejected_count
-                   FROM approval
-                   WHERE user_id = ?`;
+                   SUM(CASE WHEN a.status = '결재대기중' THEN 1 ELSE 0 END) AS pending_count,
+                   SUM(CASE WHEN a.status = '결재완료' THEN 1 ELSE 0 END) AS approved_count,
+                   SUM(CASE WHEN a.status = '반려됨' THEN 1 ELSE 0 END) AS rejected_count,
+                   u.annual_leave
+                   FROM approval a JOIN user u ON a.user_id = u.id
+                   WHERE a.user_id = ?`;
     const [rows] = await connection.execute(query, [userId]);
 
     return rows[0];
