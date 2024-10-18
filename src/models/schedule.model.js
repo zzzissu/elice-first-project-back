@@ -41,7 +41,11 @@ export const scheduleModel = {
       SET deleted_at = NOW()
       WHERE id = ? AND make_public = false
     `;
-    await db.execute(query, [scheduleId]);
+    const [result] = await db.execute(query, [scheduleId]);
+
+    if (result.affectedRows === 0) {
+        throw new Error('삭제할 일정이 없습니다.');
+    }
   },
 
   // 팀별 일정 삭제 (make_public = true)
