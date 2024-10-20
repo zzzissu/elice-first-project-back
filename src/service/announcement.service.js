@@ -8,6 +8,14 @@ export const announcementService = {
     return rows[0];
   }, 
 
+  checkAuthority: async (user_id) => {
+    const connection = await dbConnect();
+    const query = `SELECT authority FROM user WHERE id = ? AND deleted_at IS NULL`;
+    const [rows] = await connection.execute(query, [user_id]);
+    return rows[0];
+  }, 
+
+
   postAnnounce: async (announcement, user_name, user_id) => {
     const connection = await dbConnect();
     const { title, content } = announcement;
