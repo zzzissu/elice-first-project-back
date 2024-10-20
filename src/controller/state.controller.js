@@ -46,20 +46,29 @@ export const postStatusMessage = async (req, res, next) => {
 };
 
 // 상태 메시지 조회
-export const getStatusMessage = async (req, res, next) => {
+export const getAllStatusMessages = async (req, res, next) => {
   try {
-    const userId = req.user.id;
+    const statusMessages = await stateService.getAllStatusMessages();
 
-    if (!userId) throw new Error ('Unauthorized+유저 정보를 찾을 수 없음');
-
-    // 상태 메시지 조회
-    const statusMessage = await stateService.getStatusMessage(userId);
-
-    if (!statusMessage) {
+    if (!statusMessages || statusMessages.length === 0) {
       return res.status(404).json({ message: '저장된 상태 메시지가 없습니다.' });
     }
 
-    res.status(200).json({ statusMessage });
+    res.status(200).json({ statusMessages });
+  } catch (e) {
+    next(e);
+  }
+};
+//모든 유저 상태 조회
+export const getAllUserStates = async (req, res, next) => {
+  try {
+    const states = await stateService.getAllUserStates();
+
+    if (!states || states.length === 0) {
+      return res.status(404).json({ message: '저장된 상태 정보가 없습니다.' });
+    }
+
+    res.status(200).json({ states });
   } catch (e) {
     next(e);
   }

@@ -17,7 +17,12 @@ export const stateService = {
   },
 
   // 상태 메시지 조회
-  getStatusMessage: async (userId) => {
-    return await stateModel.getStatusMessage(userId);
-  }
+  getAllStatusMessages: async () => {
+    return await stateModel.getAllStatusMessages();
+  },
+
+  // 모든 사용자 상태 조회 서비스
+  getAllUserStates: async () => {
+  return await stateModel.getAllUserStates();
+}
 };
