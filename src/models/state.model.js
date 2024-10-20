@@ -23,11 +23,20 @@ export const stateModel = {
     await db.execute(query, [statusMessage, userId]);
   },
 
-  // 상태 메시지 조회
-  getStatusMessage: async (userId) => {
+  
+  // 모든 사용자 상태 메시지 조회
+  getAllStatusMessages: async () => {
     const db = await dbConnect();
-    const query = 'SELECT status_message FROM user WHERE id = ?';
-    const [rows] = await db.execute(query, [userId]);
-    return rows[0]?.status_message;
-  }
+    const query = 'SELECT id, status_message FROM user WHERE status_message IS NOT NULL';
+    const [rows] = await db.execute(query);
+    return rows;
+  },
+
+  // 모든 사용자의 상태 조회
+  getAllUserStates: async () => {
+  const db = await dbConnect();
+  const query = 'SELECT id, state FROM user';
+  const [rows] = await db.execute(query);
+  return rows;
+}
 };
