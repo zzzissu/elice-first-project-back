@@ -37,7 +37,9 @@ export const announcementController = {
 
       const announcement = await announcementService.findAnnounceById(schedule_id);
       if (!announcement) throw new Error('Not Found+공지사항을 찾을 수 없습니다.');
-      if (announcement.user_id !== user_id) throw new Error('Bad Request+삭제 권한이 없습니다.');
+
+      const checkAuthority = await announcementService.checkAuthority(user_id);
+      if (checkAuthority === 0) throw new Error('Bad Request+삭제 권한이 없습니다.');
 
       const result = await announcementService.deleteAnnounce(schedule_id);
       res.status(200).json({ message: '공지사항이 삭제되었습니다.' });
