@@ -12,7 +12,7 @@ export const announcementService = {
     const connection = await dbConnect();
     const query = `SELECT authority FROM user WHERE id = ? AND deleted_at IS NULL`;
     const [rows] = await connection.execute(query, [user_id]);
-    return rows[0];
+    return rows[0].authority;
   }, 
 
 
