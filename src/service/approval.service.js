@@ -12,6 +12,7 @@ export const approvalService = {
       const userQuery = `SELECT annual_leave FROM user WHERE id = ?`;
       const [userRows] = await connection.execute(userQuery, [userId]);
 
+      connection.release();
       return {
         pending_count: 0,
         approved_count: 0,
@@ -29,6 +30,7 @@ export const approvalService = {
                    WHERE a.user_id = ?`;
     const [rows] = await connection.execute(query, [userId]);
 
+    connection.release();
     return rows[0];
   },
 
@@ -44,6 +46,7 @@ export const approvalService = {
     const updateAnnualLeaveQuery = `UPDATE user SET annual_leave = annual_leave - ? WHERE id = ?`;
     await connection.execute(updateAnnualLeaveQuery, [daysDiff, user_id]);
     
+    connection.release();
     return result;
   },
 
@@ -54,6 +57,8 @@ export const approvalService = {
     const query = `INSERT INTO approval (start_date, finish_date, type, content, user_name, user_id)
                    VALUES (?, ?, 'outside', ?, ?, ?)`;
     const [result] = await connection.execute(query, [start_date, finish_date, content, user_name, user_id]);
+    
+    connection.release();
     return result;
   },
   
@@ -64,6 +69,8 @@ export const approvalService = {
     const query = `INSERT INTO approval (title, start_date, finish_date, type, content, user_name, user_id, request, significant)
                    VALUES (?, ?, ?, 'business', ?, ?, ?, ?, ?)`;
     const [result] = await connection.execute(query, [title, start_date, finish_date, content, user_name, user_id, request, significant]);
+    
+    connection.release();
     return result;
   },
 
@@ -76,6 +83,7 @@ export const approvalService = {
                    ORDER BY created_at DESC`;
     const [rows] = await connection.execute(query);
 
+    connection.release();
     return rows;
   },
 
@@ -88,6 +96,7 @@ export const approvalService = {
                    ORDER BY created_at DESC`;
     const [rows] = await connection.execute(query);
 
+    connection.release();
     return rows;
   }
 };
