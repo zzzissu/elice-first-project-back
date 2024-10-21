@@ -20,6 +20,8 @@ export const scheduleModel = {
       make_public = false AND type is NULL
     `;
     const [rows] = await db.execute(query, [userId]);
+
+    connection.release();
     return rows;
   },
 
@@ -32,6 +34,8 @@ export const scheduleModel = {
       AND type is NULL
     `;
     const [rows] = await db.execute(query);
+
+    connection.release();
     return rows;
   },
 
@@ -46,8 +50,11 @@ export const scheduleModel = {
     const [result] = await db.execute(query, [scheduleId]);
 
     if (result.affectedRows === 0) {
+      connection.release();
       throw new Error('Bad Request+일정을 찾을 수 없거나 이미 공개된 일정입니다.');
     }
+
+    connection.release();
     console.log('Update result:', result);
   },
 
@@ -62,8 +69,11 @@ export const scheduleModel = {
     const [result] = await db.execute(query, [scheduleId]);
 
     if (result.affectedRows === 0) {
+        connection.release();
         throw new Error('삭제할 일정이 없습니다.');
     }
+
+    connection.release();
   },
 
   // 팀별 일정 삭제 (make_public = true)
@@ -75,5 +85,7 @@ export const scheduleModel = {
       WHERE id = ? AND make_public = true AND type is NULL
     `;
     await db.execute(query, [scheduleId]);
+
+    connection.release();
   }
 };
