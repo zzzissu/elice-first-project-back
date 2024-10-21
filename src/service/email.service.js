@@ -8,6 +8,7 @@ export const emailService = {
                     WHERE email = ? AND deleted_at IS NULL`;
     const [rows] = await connection.execute(query, [target_email]);
     
+    connection.release();
     return rows[0];
   },
 
@@ -20,6 +21,7 @@ export const emailService = {
                     WHERE m.user_email = ? AND e.target_email = ? AND m.is_deleted = 0`;
     const [rows] = await connection.execute(query, [userEmail, userEmail]);
     
+    connection.release();
     return rows;
   },
 
@@ -32,6 +34,7 @@ export const emailService = {
                     WHERE e.user_email = ? AND m.user_email = ? AND m.is_deleted = 0`;
     const [rows] = await connection.execute(query, [userEmail, userEmail]);
     
+    connection.release();
     return rows;
   },
 
@@ -45,6 +48,7 @@ export const emailService = {
                     AND m.is_checked = 0 AND m.is_deleted = 0`;
     const [rows] = await connection.execute(query, [userEmail, userEmail]);
     
+    connection.release();
     return rows[0].newEmailsCount; // 읽지 않은 이메일 개수 반환
   },
 
@@ -54,6 +58,7 @@ export const emailService = {
     const query = `UPDATE email_map SET is_checked = 1 WHERE email_id = ? AND user_email = ?`;
     const [result] = await connection.execute(query, [email_id, userEmail]);
     
+    connection.release();
     return result;
   },
 
@@ -77,6 +82,7 @@ export const emailService = {
     const targetUser = await emailService.findByEmail(target_email);
     await connection.execute(mapQuery, [emailId, targetUser.email]);
 
+    connection.release();
     return result;
   },
 
@@ -88,6 +94,7 @@ export const emailService = {
                     WHERE email_id = ? AND user_email = ?`;
     const [result] = await connection.execute(query, [email_id, userEmail]);
     
+    connection.release();
     return result;
   },
 };
