@@ -41,7 +41,7 @@ app.use('/api/approval', approvalRouter);
 app.use('/api/email', emailRouter);
 
 app.use(errorHandler);
-app.listen(3004, () => {
+app.listen(3003, () => {
   console.log("서버 실행");
 });
 
