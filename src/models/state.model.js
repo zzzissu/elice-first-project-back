@@ -7,7 +7,7 @@ export const stateModel = {
     const query = 'UPDATE user SET state = ? WHERE id = ?';
     await db.execute(query, [state, userId]);
 
-    connection.end();
+    
   },
 
   // 유저 상태 조회
@@ -16,7 +16,7 @@ export const stateModel = {
     const query = 'SELECT state FROM user WHERE id = ?';
     const [rows] = await db.execute(query, [userId]);
 
-    connection.end();
+    
     return rows[0]?.state;
   },
 
@@ -26,7 +26,7 @@ export const stateModel = {
     const query = 'UPDATE user SET status_message = ? WHERE id = ?';
     await db.execute(query, [statusMessage, userId]);
 
-    connection.end();
+    
   },
 
   
@@ -36,7 +36,7 @@ export const stateModel = {
     const query = 'SELECT id, status_message FROM user WHERE status_message IS NOT NULL';
     const [rows] = await db.execute(query);
 
-    connection.end();
+    
     return rows;
   },
 
@@ -46,7 +46,7 @@ export const stateModel = {
   const query = 'SELECT id, state FROM user';
   const [rows] = await db.execute(query);
 
-  connection.end();
+  
   return rows;
 }
 };
