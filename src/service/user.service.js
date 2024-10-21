@@ -21,7 +21,7 @@ export const userService = {
     const query = `INSERT INTO user (id, name, email, password, phone, birth) VALUES (?, ?, ?, ?, ?, ?)`;
     const [result] = await connection.execute(query, [uuid, name, email, hashedPassword, phone, birth]);
     
-    connection.release();
+    connection.end();
     return result; // 새로 생성된 사용자 정보 반환
   },
 
@@ -32,7 +32,7 @@ export const userService = {
     const [rows] = await connection.execute(query, [email]);
 
     if (rows.length === 0) {
-      connection.release();
+      connection.end();
       throw new Error('Bad Request+이메일 또는 비밀번호가 잘못되었습니다.');
     }
 
@@ -41,11 +41,11 @@ export const userService = {
     // 비밀번호 검증
     const isPasswordValid = await secretPassword.verifyPassword(password, user.password);
     if (!isPasswordValid) {
-      connection.release();
+      connection.end();
       throw new Error('Bad Request+이메일 또는 비밀번호가 잘못되었습니다.');
     }
     
-    connection.release();
+    connection.end();
     // 로그인 성공 시 호출
     return user;
   },
@@ -56,7 +56,7 @@ export const userService = {
                     WHERE id = ? AND deleted_at IS NULL`;
     const [rows] = await connection.execute(query, [userId]);
     
-    connection.release();
+    connection.end();
     return rows[0];
   },
 
@@ -66,14 +66,14 @@ export const userService = {
     const [rows] = await connection.execute(query, [email]);
 
     if (rows.length === 0) {
-      connection.release();
+      connection.end();
       throw new Error('Bad Request+존재하지 않는 사용자');
     }
 
     const deleteQuery = `UPDATE user SET deleted_at = CURRENT_TIMESTAMP WHERE email = ?`;
     const [result] = await connection.execute(deleteQuery, [email]);
 
-    connection.release();
+    connection.end();
     return result;
   },
 
@@ -86,11 +86,11 @@ export const userService = {
     const [rows] = await connection.execute(query, [resetCode]);
 
     if (rows.length === 0) {
-      connection.release();
+      connection.end();
       throw new Error('Bad Request+유효하지 않은 인증 코드이거나 코드가 만료되었습니다.');
     }
 
-    connection.release();
+    connection.end();
     return rows[0];
   },
 
@@ -107,7 +107,7 @@ export const userService = {
     const deleteQuery = `DELETE FROM password_reset WHERE email = ?`;
       await connection.execute(deleteQuery, [email]);
 
-    connection.release();
+    connection.end();
     return result;
   }
 };
